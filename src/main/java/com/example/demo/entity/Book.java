@@ -24,7 +24,7 @@ public class Book {
     @Override
     public String toString() {
         return String.format(
-                "Book[id=%d, name='%s', firstLine='%s']",
+                "Book[id=%d, name='%s', code='%s']",
                 id, name, code);
     }
     

@@ -5,9 +5,12 @@
   </head>
   <body>
     <h2>Search for book using ISBN code here</h2>
-    <form action='#' th:action="@{/book}" th:object="${book}" method="post">
-       <p>Code: <input type="text" th:field="*{name}" /></p>
+    <form action='#' th:action="@{/book}" th:object="${book}" method="get">
+       <p>Code: <input type="text" th:field="*{code}" /></p>
        <p><input type="submit" value="Submit" /></p>
     </form>
+    <div>Search Result:</div>
+    <div></div>
+    <pre th:text=${result}></pre>
   </body>
 </html>

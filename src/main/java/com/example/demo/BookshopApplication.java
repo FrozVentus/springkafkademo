@@ -15,25 +15,26 @@ import com.example.demo.entity.BookRepository;
 
 @SpringBootApplication
 @RestController
-public class DemoApplication {
+public class BookshopApplication {
 
-    private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
+    private static final Logger log = LoggerFactory.getLogger(BookshopApplication.class);
     
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(BookshopApplication.class, args);
 	}
 	
 	@Bean
 	public CommandLineRunner demo(BookRepository repository) {
 	    return (args) -> {
 	        // book populate
+	        log.info("Preloading data");
 	        repository.save(new Book("BookofLight", "Light"));
 	        repository.save(new Book("BookofDarkness", "Darkness"));
 	        repository.save(new Book("BookofFire", "Fire"));
 	        repository.save(new Book("BookofWater", "Water"));
 	        repository.save(new Book("BookofWind", "Wind"));
 	        repository.save(new Book("BookofEarth", "Earth"));
-	        
+	        log.info("Preloading completed");
 	        // book fetch
             /*
              * log.info("Books found with findAll():");
