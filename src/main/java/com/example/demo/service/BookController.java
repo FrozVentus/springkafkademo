@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -24,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.demo.BookshopApplication;
 import com.example.demo.entity.Book;
 import com.example.demo.entity.BookRepository;
+import com.example.demo.kafka.KafkaTopic;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -34,6 +37,10 @@ public class BookController {
     private BookService service;
     private ObjectMapper objectMapper = new ObjectMapper();
     
+    
+    @Autowired
+    private KafkaTemplate<String, String> producer;
+    
     @Autowired
     public void setService(BookService service) {
         this.service = service;
@@ -41,9 +48,12 @@ public class BookController {
     
     @GetMapping("book")
     public String findByCode(@RequestParam (value = "code", required = false) String code, Model model) {
-        log.info("Searching for book with code: " + code);
-        Book result = service.findByCode(code).orElse(new Book("", ""));
-        log.info("Returned: " + result.toString());
+        
+        producer.send(KafkaTopic.QUERY.getTopic(), code);
+        log.info("Published Kafka event for type: " + KafkaTopic.QUERY + " with value: " + code);
+        
+        Book result = service.findBookByCode(code).orElse(new Book("", ""));
+        
         model.addAttribute("book", result);
         try {
             model.addAttribute("result",
@@ -52,8 +62,14 @@ public class BookController {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        
         model.addAttribute("code", "");
         
         return "bookcontroller";
+    }
+    
+    @KafkaListener(topics = "response", groupId = "service")
+    public void listenGroupService(String message) {
+        log.info("Received message: " + message);
     }
 }
