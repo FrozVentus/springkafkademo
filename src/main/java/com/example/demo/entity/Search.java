@@ -4,42 +4,30 @@ import java.util.Objects;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 public class Search {
 
-    private @Id @GeneratedValue Long id;
+    @NotNull
+    @Pattern(regexp = "[A-Za-z0-9]+$")
     private String code;
-    private Status status;
     
-    Search() {}
-    
-    Search(String code, Status status) {
-        this.code = code;
-        this.status = status;
+    public Search() {
+        this.code = "";
     }
     
-    public Long getId() {
-        return this.id;
+    public Search(String code) {
+        this.code = code;
     }
     
     public String getCode() {
         return this.code;
     }
     
-    public Status getStatus() {
-        return this.status;
-    }
-    
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
     public void setCode(String code) {
         this.code = code;
-    }
-    
-    public void setStatus(Status status) {
-        this.status = status;
     }
     
     @Override
@@ -51,18 +39,16 @@ public class Search {
             return false;
         }
         Search search = (Search) o;
-        return Objects.equals(this.id,  search.id) && Objects.equals(this.code, search.code)
-                && this.status == search.status;
+        return Objects.equals(this.code, search.code);
     }
     
     @Override
     public int hashCode() {
-        return Objects.hash(this.id, this.code, this.status);
+        return Objects.hash(this.code);
     }
     
     @Override
     public String toString() {
-        return "Search{" + "id=" + this.id + ", code='" + this.code + "\'" + ", status=" 
-                + this.status + "}";
+        return "Search{code='" + this.code +"\'}";
     }
 }

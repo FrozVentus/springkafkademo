@@ -1,13 +1,14 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
-<head>
+  <head>
     <title>Welcome to Bookshop</title>
   </head>
   <body>
     <h2>Search for book using ISBN code here</h2>
-    <form action='#' th:action="@{/book}" th:object="${book}" method="get">
+    <form action='#' th:action="@{/book}" th:object="${search}" method="post">
        <p>Code: <input type="text" th:field="*{code}" /></p>
-       <p><input type="submit" value="Submit" /></p>
+       <p th:if="${#fields.hasErrors('code')}" th:errors="*{code}">Invalid Code</p>
+       <p><button type="submit">Submit</button></p>
     </form>
     <div>Search Result:</div>
     <div></div>

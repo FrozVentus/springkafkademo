@@ -43,7 +43,7 @@ public class BookService {
         String book = findBookByCodeInJSON(message);
         
         producer.send(KafkaTopic.RESPONSE.getTopic(), book.toString());
-        log.info("Published Kafka event for type: " + KafkaTopic.RESPONSE + " with value: " + book.toString());
+        log.info("Published Kafka event for topic: " + KafkaTopic.RESPONSE + " with value: " + book.toString());
        
     }
     
