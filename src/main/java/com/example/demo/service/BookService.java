@@ -5,13 +5,10 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.controller.BookController;
 import com.example.demo.dao.Book;
 import com.example.demo.dao.BookRepository;
 import com.example.demo.kafka.KafkaTopic;
@@ -53,11 +50,6 @@ public class BookService {
         producer.send(KafkaTopic.RESPONSE.getTopic(), book.toString());
         log.info("Published Kafka event for topic: " + KafkaTopic.RESPONSE + " with value: " + book.toString());
        
-    }
-
-    @KafkaListener(topics = "response", groupId = "service")
-    public void listenResponse(String message) {
-        log.info("Received message: " + message);
     }
     
     public String findBookByCodeInJSON(String code) {

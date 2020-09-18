@@ -1,17 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org">
   <head>
-    <title>Welcome to Bookshop</title>
+    <title>Bookshop</title>
   </head>
   <body>
-    <h2>Search for book using ISBN code here</h2>
+    <h1>Welcome To Bookshop</h1>
+    <h3>Search for book using ISBN code here</h3>
     <form action='#' th:action="@{/book}" th:object="${search}" method="post">
        <p>Code: <input type="text" th:field="*{code}" /></p>
        <p th:if="${#fields.hasErrors('code')}">Can only be AlphaNumeric</p>
        <p><button type="submit">Submit</button></p>
     </form>
-    <div>Search Result:</div>
-    <div></div>
-    <pre th:text=${result}></pre>
   </body>
 </html>
