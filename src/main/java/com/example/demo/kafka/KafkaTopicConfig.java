@@ -17,7 +17,7 @@ import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 
-import com.example.demo.service.BookController;
+import com.example.demo.controller.BookController;
 
 @Configuration
 public class KafkaTopicConfig {

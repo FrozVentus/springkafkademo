@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.entity.Book;
-import com.example.demo.entity.BookRepository;
+import com.example.demo.dao.Book;
+import com.example.demo.dao.BookRepository;
 
 @SpringBootApplication
 @RestController

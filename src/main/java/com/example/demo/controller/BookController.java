@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.controller;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -33,57 +34,41 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.example.demo.BookshopApplication;
-import com.example.demo.entity.Book;
-import com.example.demo.entity.BookRepository;
-import com.example.demo.entity.Result;
-import com.example.demo.entity.Search;
+import com.example.demo.dao.Book;
+import com.example.demo.dao.BookRepository;
+import com.example.demo.dao.Result;
+import com.example.demo.dao.Search;
 import com.example.demo.kafka.KafkaTopic;
+import com.example.demo.service.BookService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Controller
+@RestController
 public class BookController implements WebMvcConfigurer{
     
     private static final Logger log = LoggerFactory.getLogger(BookController.class);
     private BookService service;
-    private ObjectMapper objectMapper = new ObjectMapper();
-    private Result result = new Result();
-    private Model model;
-    
-    @Autowired
-    private KafkaTemplate<String, String> producer;
     
     @Autowired
     public void setService(BookService service) {
         this.service = service;
     }
     
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/result").setViewName("bookresult");
-    }
-    
     @PostMapping("/book")
-    public String requestBook(@Valid Search search, BindingResult bindingResult) {
-        if (search.getCode() != null && !bindingResult.hasErrors()) {
-            producer.send(KafkaTopic.QUERY.getTopic(), search.getCode());
-            log.info("Published Kafka event for topic: " + KafkaTopic.QUERY + " with value: " + search.getCode());
+    public ResponseEntity<?> requestBook(@Valid Search search, BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            service.sendQuery(search.getCode());
         }
         else {
             log.info("code: " + search.getCode() + " is invalid.");
-            return "bookstore";
+            return ResponseEntity.badRequest().body("Invalid Query");
         }
-        return "redirect:/result";
+        return ResponseEntity.ok().body(search);
     }
     
     @GetMapping("/book")
-    public String loadPage(Search search) {
-        return "bookstore";
+    public ModelAndView loadPage(Search search) {
+        return new ModelAndView("bookstore");
     }
 
-    @KafkaListener(topics = "response", groupId = "service")
-    public String listenGroupService(String message) {
-        log.info("Received message: " + message);
-        return "redirect:/result";
-    }
 }

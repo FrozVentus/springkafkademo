@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.dao;
 
 import java.util.List;
 import java.util.Optional;
