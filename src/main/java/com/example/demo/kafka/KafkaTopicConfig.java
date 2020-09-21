@@ -13,16 +13,18 @@ import com.example.demo.controller.BookController;
 public class KafkaTopicConfig {
     
     private static final Logger log = LoggerFactory.getLogger(BookController.class);
-    
+    private KafkaTopic topic1 = KafkaTopic.QUERY;
+    private KafkaTopic topic2 = KafkaTopic.RESPONSE;
+
     @Bean
     public NewTopic topic1() {
-        log.info("Creating topic: query");
-        return TopicBuilder.name(KafkaTopic.QUERY.getTopic()).build();
+        log.info("Creating topic: " + topic1);
+        return TopicBuilder.name(topic1.getTopic()).build();
     }
     
     @Bean
     public NewTopic topic2() {
-        log.info("Creating topic: response");
-        return TopicBuilder.name(KafkaTopic.RESPONSE.getTopic()).build();
+        log.info("Creating topic: " + topic2);
+        return TopicBuilder.name(topic2.getTopic()).build();
     }
 }

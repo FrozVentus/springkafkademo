@@ -45,7 +45,7 @@ public class BookController implements WebMvcConfigurer{
         return new ModelAndView("bookstore");
     }
 
-    @KafkaListener(topics = "response", groupId = "service")
+    @KafkaListener(topics = "response", groupId = "controller")
     public void listenResponse(String message) {
         log.info("Received message: " + message);
     }

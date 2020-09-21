@@ -37,18 +37,17 @@ public class BookService {
     
     public void sendQuery(String code) {
         producer.send(KafkaTopic.QUERY.getTopic(), code);
-        log.info("Published Kafka event for topic: " + KafkaTopic.QUERY + " with value: " + code);
+        log.info("Published Kafka event for topic: " + KafkaTopic.QUERY);
     }
     
     @KafkaListener(topics = "query", groupId = "service")
     public void listenQuery(String message) {
-        
         log.info("Received message: " + message);
         
         String book = findBookByCodeInJSON(message);
         
         producer.send(KafkaTopic.RESPONSE.getTopic(), book.toString());
-        log.info("Published Kafka event for topic: " + KafkaTopic.RESPONSE + " with value: " + book.toString());
+        log.info("Published Kafka event for topic: " + KafkaTopic.RESPONSE);
        
     }
     
@@ -67,7 +66,7 @@ public class BookService {
             }
         }
         else {
-            return "No Such Book";
+            return "Book not Found, No Such Book";
         }
     }
 }
