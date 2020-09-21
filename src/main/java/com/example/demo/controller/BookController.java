@@ -21,12 +21,9 @@ import com.example.demo.service.BookService;
 public class BookController implements WebMvcConfigurer{
     
     private static final Logger log = LoggerFactory.getLogger(BookController.class);
-    private BookService service;
     
     @Autowired
-    public void setService(BookService service) {
-        this.service = service;
-    }
+    private BookService service;
     
     @PostMapping("/book")
     public ResponseEntity<?> requestBook(@Valid Search search, BindingResult bindingResult) {
@@ -35,7 +32,7 @@ public class BookController implements WebMvcConfigurer{
         }
         else {
             log.info("code: " + search.getCode() + " is invalid.");
-            return ResponseEntity.badRequest().body("Invalid Query");
+            return ResponseEntity.badRequest().body("ISBN can only contain numbers");
         }
         return ResponseEntity.ok().body("Query sent with value: " + search.getCode());
     }

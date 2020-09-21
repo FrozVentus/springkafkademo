@@ -8,7 +8,7 @@
     <h3>Search for book using ISBN code here</h3>
     <form action='#' th:action="@{/book}" th:object="${search}" method="post">
        <p>Code: <input type="text" th:field="*{code}" /></p>
-       <p th:if="${#fields.hasErrors('code')}">Can only be AlphaNumeric</p>
+       <p th:if="${#fields.hasErrors('code')}">Can only Contain Numbers</p>
        <p><button type="submit">Submit</button></p>
     </form>
   </body>

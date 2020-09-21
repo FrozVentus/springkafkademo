@@ -26,12 +26,12 @@ public class BookshopApplication {
 	    return (args) -> {
 	        // book populate
 	        log.info("Preloading data");
-	        repository.save(new Book("BookofLight", "Light"));
-	        repository.save(new Book("BookofDarkness", "Darkness"));
-	        repository.save(new Book("BookofFire", "Fire"));
-	        repository.save(new Book("BookofWater", "Water"));
-	        repository.save(new Book("BookofWind", "Wind"));
-	        repository.save(new Book("BookofEarth", "Earth"));
+	        repository.save(new Book("BookofLight", "01"));
+	        repository.save(new Book("BookofDarkness", "02"));
+	        repository.save(new Book("BookofFire", "03"));
+	        repository.save(new Book("BookofWater", "04"));
+	        repository.save(new Book("BookofWind", "05"));
+	        repository.save(new Book("BookofEarth", "06"));
 	        log.info("Preloading completed");
 	        // book fetch
             /*

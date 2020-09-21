@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 public class Search {
 
     @NotNull
-    @Pattern(regexp = "[A-Za-z0-9]+$")
+    @Pattern(regexp = "[0-9]+$")
     private String code;
     
     public Search() {
