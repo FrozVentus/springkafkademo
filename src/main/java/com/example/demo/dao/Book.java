@@ -1,5 +1,7 @@
 package com.example.demo.dao;
 
+import java.util.Objects;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -26,6 +28,18 @@ public class Book {
         return String.format(
                 "Book[id=%d, name='%s', code='%s']",
                 id, name, code);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Book)) {
+            return false;
+        }
+        Book book = (Book) o;
+        return Objects.equals(this.name, book.name) && Objects.equals(this.code, book.code);
     }
     
     public void setId(Long id) {

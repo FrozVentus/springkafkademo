@@ -33,12 +33,6 @@ public class BookshopApplication {
 	        repository.save(new Book("BookofWind", "05"));
 	        repository.save(new Book("BookofEarth", "06"));
 	        log.info("Preloading completed");
-	        // book fetch
-            /*
-             * log.info("Books found with findAll():");
-             * log.info("---------------------------"); for (Book book :
-             * repository.findAll()) { log.info(book.toString()); } log.info("");
-             */
 	    };
 	}
 }

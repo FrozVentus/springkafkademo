@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dao.Book;
 import com.example.demo.dao.BookRepository;
+import com.example.demo.dao.Search;
 import com.example.demo.kafka.KafkaTopic;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,8 +30,8 @@ public class BookServiceImpl implements BookService{
     private BookRepository repository;
     
     @Override
-    public void sendQuery(String code) {
-        producer.send(KafkaTopic.QUERY.getTopic(), code);
+    public void sendQuery(Search search) {
+        producer.send(KafkaTopic.QUERY.getTopic(), search.getCode());
         log.info("Published Kafka event for topic: " + KafkaTopic.QUERY);
     }
     
@@ -43,6 +44,11 @@ public class BookServiceImpl implements BookService{
         producer.send(KafkaTopic.RESPONSE.getTopic(), book.toString());
         log.info("Published Kafka event for topic: " + KafkaTopic.RESPONSE);
        
+    }
+
+    @KafkaListener(topics = "response", groupId = "controller")
+    public void listenResponse(String message) {
+        log.info("Received message: " + message);
     }
 
     public String findBookByCodeInJSON(String code) {

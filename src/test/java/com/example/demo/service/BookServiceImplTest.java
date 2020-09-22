@@ -15,8 +15,8 @@ class BookServiceImplTest {
     @Test
     void testConvertBookToJSON() {
         Book bookToConvert = new Book("BookofLight", "01");
-        bookToConvert.setId(Long.valueOf(01));
-        String converted = "{\r\n  \"id\" : 01,\r\n  \"name\" : \"BookofLight\",\r\n  \"code\" : \"01\"\r\n}";
+        bookToConvert.setId(Long.valueOf(1));
+        String converted = "{\r\n  \"id\" : 1,\r\n  \"name\" : \"BookofLight\",\r\n  \"code\" : \"01\"\r\n}";
         assertEquals(converted, bookService.convertBookToJSON(Optional.of(bookToConvert)));
     }
 

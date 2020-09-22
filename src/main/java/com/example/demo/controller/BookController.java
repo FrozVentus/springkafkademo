@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,10 +24,10 @@ public class BookController implements WebMvcConfigurer{
     @Autowired
     private BookService service;
     
-    @PostMapping("/book")
+    @PostMapping("/books")
     public ResponseEntity<?> requestBook(@Valid Search search, BindingResult bindingResult) {
         if (!bindingResult.hasErrors()) {
-            service.sendQuery(search.getCode());
+            service.sendQuery(search);
         }
         else {
             log.info("code: " + search.getCode() + " is invalid.");
@@ -37,14 +36,9 @@ public class BookController implements WebMvcConfigurer{
         return ResponseEntity.ok().body("Query sent with value: " + search.getCode());
     }
     
-    @GetMapping("/book")
+    @GetMapping("/books")
     public ModelAndView loadPage(Search search) {
         return new ModelAndView("bookstore");
-    }
-
-    @KafkaListener(topics = "response", groupId = "controller")
-    public void listenResponse(String message) {
-        log.info("Received message: " + message);
     }
     
 }
