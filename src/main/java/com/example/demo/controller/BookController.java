@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.demo.dao.Search;
 import com.example.demo.service.BookService;
@@ -31,7 +32,7 @@ public class BookController implements WebMvcConfigurer{
         }
         else {
             log.info("code: " + search.getCode() + " is invalid.");
-            return ResponseEntity.badRequest().body("ISBN can only contain numbers");
+            return ResponseEntity.badRequest().body("ISBN can only contain 20 numbers");
         }
         return ResponseEntity.ok().body("Query sent with value: " + search.getCode());
     }
@@ -39,6 +40,11 @@ public class BookController implements WebMvcConfigurer{
     @GetMapping("/books")
     public ModelAndView loadPage(Search search) {
         return new ModelAndView("bookstore");
+    }
+    
+    @GetMapping("/")
+    public RedirectView redirect() {
+        return new RedirectView("/books");
     }
     
 }

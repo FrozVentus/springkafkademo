@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -14,6 +15,7 @@ import com.example.demo.dao.BookRepository;
 import com.example.demo.service.BookService;
 
 @WebMvcTest(BookController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class BookControllerTest {
 
     @Autowired
@@ -38,6 +40,11 @@ class BookControllerTest {
     @Test
     void testLoadPage() throws Exception {
         this.mockMvc.perform(get("/books")).andExpect(status().isOk());
+    }
+    
+    @Test
+    void testRedirect() throws Exception {
+        this.mockMvc.perform(get("/")).andExpect(status().is3xxRedirection());
     }
 
 }
